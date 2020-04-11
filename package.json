@@ -1,0 +1,59 @@
+{
+  "name": "use-validity-state",
+  "version": "1.0.0",
+  "description": "A React hook for form validation leveraging HTML5 ValidityState",
+  "keywords": [
+    "react",
+    "hook",
+    "form",
+    "validation",
+    "validity"
+  ],
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "files": [
+    "build",
+    "LICENSE",
+    "README"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:eslint": "eslint \"**/src/**/*.{js,ts,jsx,tsx}\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guerc/use-validity-state.git"
+  },
+  "author": "Christian Guertler <mail@sourcebuilder.eu>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/guerc/use-validity-state/issues"
+  },
+  "homepage": "https://github.com/guerc/use-validity-state#readme",
+  "peerDependencies": {
+    "react": "^16.8.0"
+  },
+  "devDependencies": {
+    "@types/enzyme": "^3.10.5",
+    "@types/enzyme-adapter-react-16": "^1.0.6",
+    "@types/jest": "^25.2.1",
+    "@types/react": "^16.9.34",
+    "@typescript-eslint/eslint-plugin": "^2.27.0",
+    "@typescript-eslint/parser": "^2.27.0",
+    "babel-jest": "^25.3.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "eslint": "^6.8.0",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^3.0.0",
+    "jest": "^25.3.0",
+    "jest-enzyme": "^7.1.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "ts-jest": "^25.3.1",
+    "typescript": "^3.8.3"
+  }
+}

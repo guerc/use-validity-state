@@ -1,0 +1,25 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": ["plugin:@typescript-eslint/recommended", "plugin:react/recommended"],
+  "plugins": ["@typescript-eslint", "react", "react-hooks"],
+  "rules": {
+    "indent": "off",
+    "@typescript-eslint/indent": ["error", 2],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "quotes": ["error", "single"],
+    "comma-dangle": ["error", "always-multiline"]
+  },
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2019
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
+}
