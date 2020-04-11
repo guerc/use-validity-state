@@ -5,7 +5,7 @@ cache:
   directories:
     - "node_modules"
 script:
-  - yarn install codecov -g
+  - yarn global add codecov
   - yarn test:coverage
 after_success:
   - codecov
