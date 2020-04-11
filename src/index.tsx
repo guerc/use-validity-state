@@ -18,15 +18,15 @@ export type ConstraintValidationCandidate =
 const useValidityState = <
   T extends Record<string, React.RefObject<ConstraintValidationCandidate>>
 >(
-  initial: T,
+  refs: T,
 ): CompositeValidity<T> => {
-  const x = Object.entries(initial).reduce((prev, [name, ref]) => {
+  const validityCollection = Object.entries(refs).reduce((prev, [name, ref]) => {
     return { ...prev, [name]: ref.current?.validity };
   }, {} as ValidityCollection<T>);
 
-  const every = Object.values(initial).every(ref => ref.current?.validity.valid);
+  const every = Object.values(refs).every(ref => ref.current?.validity.valid);
 
-  return { ...x, every };
+  return { ...validityCollection, every };
 };
 
 export default useValidityState;
