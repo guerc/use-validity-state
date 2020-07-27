@@ -1,20 +1,16 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { mount } from 'enzyme';
 import useValidityState, { CompositeValidity } from './';
 
 const TestWrapperSingle = (): JSX.Element | null => {
   const [val, setVal] = useState<string>('');
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  const validity = useValidityState({
-    input: inputRef,
-  });
+  const validity = useValidityState();
 
   return (
     <form data-validity={validity}>
       <input
         type="text"
-        ref={inputRef}
+        ref={validity.register}
         value={val}
         required
         pattern="[0-9]+"
@@ -27,19 +23,14 @@ const TestWrapperSingle = (): JSX.Element | null => {
 const TestWrapperMultiple = (): JSX.Element | null => {
   const [val1, setVal1] = useState<string>('');
   const [val2, setVal2] = useState<string>('');
-  const inputRef1 = useRef<HTMLInputElement>(null);
-  const inputRef2 = useRef<HTMLInputElement>(null);
 
-  const validity = useValidityState({
-    input1: inputRef1,
-    input2: inputRef2,
-  });
+  const validity = useValidityState();
 
   return (
     <form data-validity={validity}>
       <input
         type="text"
-        ref={inputRef1}
+        ref={validity.register}
         value={val1}
         required
         pattern="[0-9]+"
@@ -47,7 +38,7 @@ const TestWrapperMultiple = (): JSX.Element | null => {
       />
       <input
         type="text"
-        ref={inputRef2}
+        ref={validity.register}
         value={val2}
         required
         pattern="[0-9]+"
@@ -69,7 +60,9 @@ describe('useValidityState', (): void => {
 
       expect(validity).toEqual({
         every: expect.any(Boolean),
-        input: expect.any(ValidityState),
+        any: {
+          input: expect.any(ValidityState),
+        },
       })
     });
 
@@ -81,12 +74,10 @@ describe('useValidityState', (): void => {
       // force re-render
       wrapper.setProps({});
 
-      const validity: CompositeValidity<{
-        input: HTMLInputElement;
-      }> = wrapper.childAt(0).prop('data-validity');
+      const validity: CompositeValidity = wrapper.childAt(0).prop('data-validity');
 
       expect(validity.every).toBeTruthy();
-      expect(validity.input?.valid).toBeTruthy();
+      expect(validity.any.input.valid).toBeTruthy();
     });
 
     it('should return false if pattern constraint validation failed', (): void => {
@@ -97,13 +88,11 @@ describe('useValidityState', (): void => {
       // force re-render
       wrapper.setProps({});
 
-      const validity: CompositeValidity<{
-        input: HTMLInputElement;
-      }> = wrapper.childAt(0).prop('data-validity');
+      const validity: CompositeValidity = wrapper.childAt(0).prop('data-validity');
 
       expect(validity.every).toBeFalsy();
-      expect(validity.input?.valid).toBeFalsy();
-      expect(validity.input?.patternMismatch).toBeTruthy();
+      expect(validity.any.input?.valid).toBeFalsy();
+      expect(validity.any.input?.patternMismatch).toBeTruthy();
     });
 
     it('should return false if required constraint validation failed', (): void => {
@@ -114,13 +103,11 @@ describe('useValidityState', (): void => {
       // force re-render
       wrapper.setProps({});
 
-      const validity: CompositeValidity<{
-        input: HTMLInputElement;
-      }> = wrapper.childAt(0).prop('data-validity');
+      const validity: CompositeValidity = wrapper.childAt(0).prop('data-validity');
 
       expect(validity.every).toBeFalsy();
-      expect(validity.input?.valid).toBeFalsy();
-      expect(validity.input?.valueMissing).toBeTruthy();
+      expect(validity.any.input.valid).toBeFalsy();
+      expect(validity.any.input.valueMissing).toBeTruthy();
     });
   });
 
@@ -150,14 +137,11 @@ describe('useValidityState', (): void => {
       // force re-render
       wrapper.setProps({});
 
-      const validity: CompositeValidity<{
-        input1: HTMLInputElement;
-        input2: HTMLInputElement;
-      }> = wrapper.childAt(0).prop('data-validity');
+      const validity: CompositeValidity = wrapper.childAt(0).prop('data-validity');
 
       expect(validity.every).toBeTruthy();
-      expect(validity.input1?.valid).toBeTruthy();
-      expect(validity.input2?.valid).toBeTruthy();
+      expect(validity.any.input1.valid).toBeTruthy();
+      expect(validity.any.input2.valid).toBeTruthy();
     });
 
     it('should return false if constraint validation failed for one input', (): void => {
@@ -174,14 +158,11 @@ describe('useValidityState', (): void => {
       // force re-render
       wrapper.setProps({});
 
-      const validity: CompositeValidity<{
-        input1: HTMLInputElement;
-        input2: HTMLInputElement;
-      }> = wrapper.childAt(0).prop('data-validity');
+      const validity: CompositeValidity = wrapper.childAt(0).prop('data-validity');
 
       expect(validity.every).toBeFalsy();
-      expect(validity.input1?.valid).toBeTruthy();
-      expect(validity.input2?.valid).toBeFalsy();
+      expect(validity.any.input1.valid).toBeTruthy();
+      expect(validity.any.input2.valid).toBeFalsy();
     });
   });
 });

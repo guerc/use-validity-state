@@ -1,12 +1,12 @@
-import React from 'react';
+import { useRef, useCallback } from 'react';
 
-export type ValidityCollection<T> = {
-  [K in keyof T]?: ValidityState;
-};
+export type ValidityCollection = Record<string, ValidityState>;
 
-export type CompositeValidity<T> = ValidityCollection<T> & {
+export interface CompositeValidity {
+  any: ValidityCollection;
   every: boolean;
-};
+  register: (instance: ConstraintValidationCandidate | null) => void;
+}
 
 export type ConstraintValidationCandidate =
   | HTMLButtonElement
@@ -15,18 +15,22 @@ export type ConstraintValidationCandidate =
   | HTMLSelectElement
   | HTMLTextAreaElement;
 
-const useValidityState = <
-  T extends Record<string, React.RefObject<ConstraintValidationCandidate>>
->(
-  refs: T,
-): CompositeValidity<T> => {
-  const validityCollection = Object.entries(refs).reduce((prev, [name, ref]) => {
-    return { ...prev, [name]: ref.current?.validity };
-  }, {} as ValidityCollection<T>);
+const useValidityState = (): CompositeValidity => {
+  const refs = useRef<Record<string, ConstraintValidationCandidate>>({});
 
-  const every = Object.values(refs).every(ref => ref.current?.validity.valid);
+  const validityCollection = Object.entries(refs.current).reduce((prev, [name, ref]) => {
+    return { ...prev, [name]: ref.validity };
+  }, {} as ValidityCollection);
 
-  return { ...validityCollection, every };
+  const every = Object.values(refs.current).every(ref => ref.validity.valid);
+
+  const register = useCallback((instance: ConstraintValidationCandidate | null): void => {
+    if (instance && refs.current) {
+      refs.current[instance.name] = instance;
+    }
+  }, []);
+
+  return { any: validityCollection, every, register };
 };
 
 export default useValidityState;
