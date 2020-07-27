@@ -20,6 +20,7 @@
     "build": "tsc",
     "prepare": "npm run build",
     "test": "jest",
+    "test:coverage": "jest --coverage",
     "test:eslint": "tsc --noEmit && eslint \"**/src/**/*.{js,ts,jsx,tsx}\""
   },
   "repository": {
