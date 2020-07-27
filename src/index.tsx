@@ -25,7 +25,12 @@ const useValidityState = (): CompositeValidity => {
   const every = Object.values(refs.current).every(ref => ref.validity.valid);
 
   const register = useCallback((instance: ConstraintValidationCandidate | null): void => {
-    if (instance && refs.current) {
+    if (!instance?.name) {
+      console.warn('Name for input field not found. Please make sure you assign one via the "name" prop.')
+      return;
+    }
+
+    if (refs.current) {
       refs.current[instance.name] = instance;
     }
   }, []);
