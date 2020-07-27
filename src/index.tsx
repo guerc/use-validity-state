@@ -16,23 +16,21 @@ export type ConstraintValidationCandidate =
   | HTMLTextAreaElement;
 
 const useValidityState = (): CompositeValidity => {
-  const refs = useRef<Record<string, ConstraintValidationCandidate>>({});
+  const refsMap = useRef<Record<string, ConstraintValidationCandidate>>({});
 
-  const validityCollection = Object.entries(refs.current).reduce((prev, [name, ref]) => {
+  const validityCollection = Object.entries(refsMap.current).reduce((prev, [name, ref]) => {
     return { ...prev, [name]: ref.validity };
   }, {} as ValidityCollection);
 
-  const every = Object.values(refs.current).every(ref => ref.validity.valid);
+  const every = Object.values(refsMap.current).every(ref => ref.validity.valid);
 
   const register = useCallback((instance: ConstraintValidationCandidate | null): void => {
     if (!instance?.name) {
-      console.warn('Name for input field not found. Please make sure you assign one via the "name" prop.')
+      console.warn('You didn’t provide an input element or one without a "name" prop. Ignoring...', instance);
       return;
     }
 
-    if (refs.current) {
-      refs.current[instance.name] = instance;
-    }
+    refsMap.current[instance.name] = instance;
   }, []);
 
   return { any: validityCollection, every, register };
