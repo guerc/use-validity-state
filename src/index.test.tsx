@@ -9,12 +9,13 @@ const TestWrapperSingle = (): JSX.Element | null => {
   return (
     <form data-validity={validity}>
       <input
-        type="text"
-        ref={validity.register}
-        value={val}
-        required
-        pattern="[0-9]+"
+        name="input"
         onChange={(e): void => setVal(e.target.value)}
+        pattern="[0-9]+"
+        ref={validity.register}
+        required
+        type="text"
+        value={val}
       />
     </form>
   );
@@ -29,20 +30,22 @@ const TestWrapperMultiple = (): JSX.Element | null => {
   return (
     <form data-validity={validity}>
       <input
-        type="text"
-        ref={validity.register}
-        value={val1}
-        required
-        pattern="[0-9]+"
+        name="input1"
         onChange={(e): void => setVal1(e.target.value)}
+        pattern="[0-9]+"
+        ref={validity.register}
+        required
+        type="text"
+        value={val1}
       />
       <input
-        type="text"
-        ref={validity.register}
-        value={val2}
-        required
-        pattern="[0-9]+"
+        name="input2"
         onChange={(e): void => setVal2(e.target.value)}
+        pattern="[0-9]+"
+        ref={validity.register}
+        required
+        type="text"
+        value={val2}
       />
     </form>
   );
@@ -63,6 +66,7 @@ describe('useValidityState', (): void => {
         any: {
           input: expect.any(ValidityState),
         },
+        register: expect.any(Function),
       })
     });
 
@@ -122,8 +126,11 @@ describe('useValidityState', (): void => {
 
       expect(validity).toEqual({
         every: expect.any(Boolean),
-        input1: expect.any(ValidityState),
-        input2: expect.any(ValidityState),
+        any: {
+          input1: expect.any(ValidityState),
+          input2: expect.any(ValidityState),
+        },
+        register: expect.any(Function),
       })
     });
 
