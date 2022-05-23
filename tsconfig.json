@@ -1,16 +1,17 @@
 {
   "compilerOptions": {
-    "outDir": "build",
-    "target": "es6",
-    "declaration": true,
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
+    "baseUrl": "./src",
+    "declaration": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
     "moduleResolution": "node",
-    "jsx": "react",
-    "baseUrl": "./src"
+    "outDir": "build",
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "es6"
   },
   "include": ["src"],
   "exclude": ["node_modules", "src/*.test.ts*"]
